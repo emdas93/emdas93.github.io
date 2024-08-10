@@ -3,7 +3,7 @@
         <div class="grid grid-cols-4">
             <div class="col-span-3">
                 <div class="mx-5 p-3">
-                    <h1 class="text-3xl font-bold">자바스크립트 기초 문법 (1)</h1>
+                    <h1 class="text-3xl font-bold">{{ }}</h1>
                     <h5 class="text-sm font-bold">자바스크립트 기초 문법을 정리한 글입니다.</h5>
                     <p class="text-xs">2024-08-10</p>
                     <hr class="my-5">
@@ -31,9 +31,13 @@
 
 <script setup>
 import useMainStore from '../store/main';
+import usePostStore from '../store/post';
 
 const mainStore = useMainStore();
+const postStore = usePostStore();
 
 mainStore.setTitle('BLOG');
+postStore.getPost();
+console.log(postStore.content);
 
 </script>

@@ -31,6 +31,7 @@ import useMainStore from '../store/main';
 
 const mainStore = useMainStore();
 
+
 mainStore.setTitle('BLOG');
 
 </script>

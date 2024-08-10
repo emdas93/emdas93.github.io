@@ -10,7 +10,14 @@
 	},
 	"dependencies": {
 		"bootstrap-icons": "^1.11.3",
+		"gray-matter": "^4.0.3",
+		"markdown-it": "^14.1.0",
+		"markdown-it-toc-done-right": "^4.2.0",
 		"pinia": "^2.2.1",
+		"unhead": "^1.9.16",
+		"uslug": "^1.0.4",
+		"vite-plugin-node-polyfills": "^0.22.0",
+		"vite-raw-plugin": "^1.0.2",
 		"vue": "^3.4.31",
 		"vue-router": "^4.4.3"
 	},

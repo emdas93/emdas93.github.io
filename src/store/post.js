@@ -114,26 +114,6 @@ export const usePostStore = defineStore('post', {
                 this.markdownFileList = await import.meta.glob('/posts/*.md');
             }
         },
-        replaceOccurrence(str, pattern, replacement) {
-            // pattern을 모두 찾기 위해 global 플래그 사용
-            const regex = new RegExp(pattern, 'g');
-            let match;
-            let count = 0;
-
-            // pattern을 순차적으로 찾으면서 두 번째 occurrence를 체크
-            while ((match = regex.exec(str)) !== null) {
-                count++;
-                if (count === 2) {
-                    // 두 번째 occurrence가 시작되는 인덱스를 구함
-                    const start = match.index;
-                    // 치환 결과를 반환
-                    return str.substring(0, start) + str.substring(start).replace(regex, replacement);
-                }
-            }
-
-            // 만약 패턴이 2번 이상 등장하지 않으면 원본 문자열 반환
-            return str;
-        }
     }
 
 });

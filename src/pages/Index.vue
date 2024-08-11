@@ -27,11 +27,29 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { useMainStore } from '../store/main';
+import { usePostStore } from '../store/post';
+
+import matter from 'gray-matter';
 
 const mainStore = useMainStore();
-
+const postStore = usePostStore();
 
 mainStore.setTitle('BLOG');
+
+const posts = ref([]);
+
+await postStore.markdownListLoad();
+
+const files = Object.keys(postStore.markdownFileList);
+
+for (let filename in files) {
+	let mdFile = await postStore.markdownFileList[files[filename]]();
+	let frontmatter = matter(mdFile.default);
+	if (frontmatter.data.slug !== 'tamplate') {
+		posts.value.push(frontmatter.data);
+	}
+}
 
 </script>

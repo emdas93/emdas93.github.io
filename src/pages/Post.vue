@@ -3,27 +3,15 @@
         <div class="grid grid-cols-4">
             <div class="col-span-3">
                 <div class="mx-5 p-3">
-                    <h1 class="text-3xl font-bold">{{  }}</h1>
-                    <h5 class="text-sm font-bold">자바스크립트 기초 문법을 정리한 글입니다.</h5>
-                    <p class="text-xs">2024-08-10</p>
-                    <hr class="my-5">
-                    <p class="mt-2 text-base">자바스크립트의 사용률은 다른 언어에 비해 엄청나게 높습니다. 특히나 웹의 발전으로 인한 이유 뿐만아니라
-                        NodeJS의 등장으로 서버사이드에서도 실행가능한 이유 덕분에 사용률이 상당히 높습니다.</p>
-                    <p class="mt-2 text-base">사용자량이 많고 사용자가 많다는 것은 그만큼 중요성이 높다는 것을 의미한다고 생각합니다.</p>
-                    <p class="mt-2 text-base">이번에 쓸 글은 자바스크립트를 공부하면서 정리한 글을 포스팅할 내용입니다.</p>
+                    <div v-html="postData.content" class="markdown-body"></div>
                 </div>
             </div>
-            <div class="">
-                <nav>
-                    <p class="text-sm">TOC 영역</p>
-                    <ul class="ps-3">
-                        <li class="text-xs p-1">Javascript</li>
-                        <li class="text-xs p-1">Database</li>
-                        <li class="text-xs p-1">PHP</li>
-                        <li class="text-xs p-1">Github</li>
-                        <li class="text-xs p-1">일상</li>
-                    </ul>
-                </nav>
+            <div class="relative">
+                <TocContainer
+                    class="fixed"
+                    :content="postData.toc">
+                </TocContainer>
+
             </div>
         </div>
     </div>
@@ -31,15 +19,22 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useMainStore } from '../store/main';
-import { usePostStore } from '../store/post.js';
+import { useMainStore } from '/src/store/main';
+import { usePostStore } from '/src/store/post.js';
+
+import TocContainer from '/src/components/post/TocContainer.vue';
 
 const mainStore = useMainStore();
 const postStore = usePostStore();
-// Client Side Render
-onMounted(async () => {
-});
+
 const postData = ref();
 
+postData.value = await postStore.fetchContent();
+
+mainStore.setTitle(postData.value.frontmatter.title);
 
 </script>
+
+<style>
+@import '/node_modules/github-markdown-css/github-markdown-light.css'
+</style>

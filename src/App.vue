@@ -7,7 +7,9 @@ import AppHeader from '/src/components/AppHeader.vue';
 	<AppHeader></AppHeader>
 	
 	<main>
-		<router-view></router-view>
+		<Suspense>
+			<router-view></router-view>
+		</Suspense>
 	</main>
 
 </template>

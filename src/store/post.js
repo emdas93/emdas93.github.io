@@ -1,64 +1,82 @@
 import { defineStore } from "pinia";
-
-import matter from "gray-matter";
-import markdownIt from "markdown-it";
-import markdownItTocDoneRight from "markdown-it-toc-done-right";
-import uslug from "uslug";
-
 import { useRoute, useRouter } from "vue-router";
 
-const usePostStore = defineStore({
+// Markdown Imports ----------------------------------*/
+import markdownIt from 'markdown-it';
+import markdownItAnchor from 'markdown-it-anchor';
+// import markdownItToc from 'markdown-it-table-of-contents';
+import markdownItTocDoneRight from 'markdown-it-toc-done-right'
+import matter from 'gray-matter';
+import uslug from "uslug";
+/*----------------------------------------------------*/
+
+export const usePostStore = defineStore('post', {
     id: 'post',
     store: () => {
         return {
+            slug: '',
+            markdownFileList: undefined,
+            markdownFile: {},
+            matterObject: {},
+            frontmatter: {},
             toc: '',
             content: '',
-            matter: {},
-            postList: [],
+            tocElement: {},
         }
     },
+
     getters: {
-        getToc: (state) => {
-            return state.toc
-        },
-        getMatter: (state) => {
-            return state.matter;
-        },
-        getContent: (state) => {
-            return state.content;
-        }
-
     },
-    actions: {
-        async getPost() {
 
-            // Markdown Setting
-            const md = markdownIt({ html: true });
-            md.use(markdownItTocDoneRight, {
-                containerClass: 'toc',
-                slugify: (s) => {
-                    return uslug(s);
-                },
-                callback: (html, ast) => {
-                    this.toc = html;
-                }
-            })
+    actions: {
+        async fetchContent() {
 
             const route = useRoute();
-            console.log(route.params.slug);
 
-            // Markdown File Load
-            const filename = '/posts/' + route.params.slug + '.md';
-            const mdFile = await import.meta.glob('/posts/*.md')[filename]();
-            const module = matter(mdFile.default);
-            
-            this.matter = module.data;
-            this.content = module.content;
+            this.slug = route.params.slug;
+
+            const md = markdownIt({ html: true })
+                .use(markdownItAnchor, { slugify: (s) => { return uslug(s) }, })
+                .use(markdownItTocDoneRight, {
+                    containerClass: 'toc', // TOC 컨테이너 클래스 설정
+                    slugify: (s) => { return uslug(s) },
+                    callback: (html, ast) => {
+                        this.toc = html;
+                    }
+                });
+
+
+            this.markdownFile = await this.markdownFileLoad(this.slug);
+
+            this.matterObject = matter(this.markdownFile);
+
+            this.frontmatter = this.matterObject.data;
+
+            this.content = md.render(this.matterObject.content);
         },
-        async getPostList() {
-            this.postList = await import.meta.glob('/posts/*.md');
-		},
-    }
-});
 
-export default usePostStore;
+        async markdownFileLoad(filename) {
+            try {
+                const filePath = `/posts/${filename}.md`;
+                await this.markdownListLoad();
+
+                if (this.markdownFileList[filePath]) {
+                    const module = await this.markdownFileList[filePath]();
+                    return module.default;
+                } else {
+                    console.error(`File ${filename}.md not found`);
+                    return '';
+                }
+            } catch (error) {
+                console.error(`Failed to load ${filename}.md`, error);
+                return '';
+            }
+        },
+        async markdownListLoad() {
+            if (this.markdownFileList === undefined) {
+                this.markdownFileList = await import.meta.glob('/posts/*.md');
+            }
+        }
+    }
+
+});

@@ -10,7 +10,7 @@ const store = createPinia();
 
 const app = createApp(App);
 app.use(router)
-   .use(store);
+   .use(store)
 
 
 app.mount('#app');

@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import useMainStore from '../store/main';
+import { useMainStore } from '../store/main';
 
 const mainStore = useMainStore();
 

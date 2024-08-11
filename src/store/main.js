@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-const useMainStore = defineStore('main', {
+export const useMainStore = defineStore('main', {
     id:'main',
     store: () => {
         return {
@@ -19,5 +19,3 @@ const useMainStore = defineStore('main', {
         }
     }
 })
-
-export default useMainStore;

@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+import lineClamp from '@tailwindcss/line-clamp';
+
 export default {
   content: [
     "./index.html",
@@ -7,9 +10,10 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'main-banner': "url('/src/assets/banner.webp')"
       }
     },
   },
-  plugins: [],
+  plugins: [
+    lineClamp
+  ],
 }

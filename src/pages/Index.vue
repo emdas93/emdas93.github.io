@@ -2,12 +2,11 @@
     <div class="container mx-auto px-5 my-2">
         <div class="grid grid-cols-4">
             <div class="col-span-3">
-                <router-link to="/post/1" class="mx-5 border-y p-3">
-                    <h3 class="text-xl font-bold">자바스크립트 기초 문법 (1)</h3>
-                    <h5 class="text-sm font-bold">자바스크립트 기초 문법을 정리한 글입니다.</h5>
-                    <p class="text-xs">2024-08-10</p>
-                    <p class="mt-2 text-sm text-slate-600">자바스크립트의 사용률은 다른 언어에 비해 엄청나게 높습니다. 특히나 웹의 발전으로 인한 이유 뿐만아니라
-                        NodeJS의 등장으로 서버사이드에서도 실행가능한 이유 덕분에 사용률이 상당히 높습니다.</p>
+                <router-link v-for="post in posts" :to="'/post/' + post.data.slug" class="mx-5 border-y p-3">
+                    <h3 class="text-xl font-bold">{{ post.data.title }}</h3>
+                    <h5 class="text-sm font-bold">{{ post.data.description }}</h5>
+                    <p class="text-xs">{{ post.data.created_at }}</p>
+                    <p class="mt-2 text-sm text-slate-600 line-clamp-3">{{ post.content }}</p>
                 </router-link>
             </div>
             <div class="">
@@ -40,16 +39,24 @@ mainStore.setTitle('BLOG');
 
 const posts = ref([]);
 
-await postStore.markdownListLoad();
+if (import.meta.env.MODE === 'development') {
+    await postStore.markdownListLoad();
 
-const files = Object.keys(postStore.markdownFileList);
+    const files = Object.keys(postStore.markdownFileList);
 
-for (let filename in files) {
-	let mdFile = await postStore.markdownFileList[files[filename]]();
-	let frontmatter = matter(mdFile.default);
-	if (frontmatter.data.slug !== 'tamplate') {
-		posts.value.push(frontmatter.data);
-	}
+    for (let filename in files) {
+        let mdFile = await postStore.markdownFileList[files[filename]]();
+        let frontmatter = matter(mdFile.default);
+        if (frontmatter.data.slug !== 'tamplate') {
+            const content = frontmatter.content.replace('#', '').replace('**', '').slice(0, 290);
+            const putData = {
+                data: frontmatter.data,
+                content: content
+            }
+            posts.value.push(putData);
+        }
+    }
+} else if (import.meta.env.MODE === 'production') {
+
 }
-
 </script>

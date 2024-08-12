@@ -26,7 +26,6 @@ export const usePostStore = defineStore('post', {
 
     actions: {
         async fetchContent() {
-
             const route = useRoute();
 
             this.slug = route.params.slug;
@@ -43,39 +42,39 @@ export const usePostStore = defineStore('post', {
                     }
                 });
 
-                function generateToc(node) {
-                    let html = "";
-                    // 현재 노드의 이름이 있는 경우 li 요소로 감싸기
-                    if (node.n) {
-                        let padding = 'ps-3';
-                        if(node.l === 1) {
-                            padding = '';
-                        }
-                        html += `<li class="text-sm text-slate-500 ${padding}"><a href="#${uslug(node.n)}">${node.n}`;
+            function generateToc(node) {
+                let html = "";
+                // 현재 노드의 이름이 있는 경우 li 요소로 감싸기
+                if (node.n) {
+                    let padding = 'ps-3';
+                    if (node.l === 1) {
+                        padding = '';
                     }
-                
-                    // "c" 키가 배열이고, 배열에 요소가 있는 경우 ul로 감싸고 재귀 호출
-                    if (Array.isArray(node.c) && node.c.length > 0) {
-                        html += "<ul>";
-                        node.c.forEach(childNode => {
-                            html += generateToc(childNode); // 하위 노드를 재귀적으로 처리
-                        });
-                        html += "</ul>";
-                    }
-                
-                    // 현재 노드가 li로 시작했다면 li를 닫기
-                    if (node.n) {
-                        html += "</a></li>";
-                    }
-                
-                    return html;
+                    html += `<li class="text-sm text-slate-300 ${padding}"><a href="#${uslug(node.n)}">${node.n}`;
                 }
 
+                // "c" 키가 배열이고, 배열에 요소가 있는 경우 ul로 감싸고 재귀 호출
+                if (Array.isArray(node.c) && node.c.length > 0) {
+                    html += "<ul>";
+                    node.c.forEach(childNode => {
+                        html += generateToc(childNode); // 하위 노드를 재귀적으로 처리
+                    });
+                    html += "</ul>";
+                }
 
+                // 현재 노드가 li로 시작했다면 li를 닫기
+                if (node.n) {
+                    html += "</a></li>";
+                }
 
-            
+                return html;
+            }
 
-            this.markdownFile = await this.markdownFileLoad(this.slug);
+            if (import.meta.env.MODE === 'development') {
+                this.markdownFile = await this.markdownFileLoad(this.slug);
+            } else {
+                this.markdownFile = await fetch('https://')
+            }
 
             const matterObject = matter(this.markdownFile);
 

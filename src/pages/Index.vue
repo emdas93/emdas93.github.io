@@ -49,7 +49,7 @@ useSeoMeta({
 
 const posts = ref([]);
 
-if (import.meta.env.MODE === 'development') {
+if (import.meta.env.MODE === 'development' || import.meta.env.MODE === 'generate') {
     await postStore.markdownListLoad();
 
     const files = Object.keys(postStore.markdownFileList);

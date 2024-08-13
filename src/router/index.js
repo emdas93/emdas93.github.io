@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, createMemoryHistory } from "vue-router";
 
 // Components
-import Index from "/src/pages/Index.vue";
+import Index from "../pages/Index.vue";
 import Post from "../pages/Post.vue";
 
 const routes = [

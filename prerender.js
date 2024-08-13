@@ -51,7 +51,7 @@ routesToPrerender.push('/');
             .replace(`<!--preload-links-->`, preloadLinks)
             .replace(`<!--app-html-->`, appHtml)
 
-        const filePath = 'dist/static' + url + '/index.html'
+        const filePath = 'dist/static' + url + 'index.html'
 
 
         const fileDirName = path.dirname(filePath);
@@ -67,6 +67,7 @@ routesToPrerender.push('/');
 
     await copyFolderSync('dist/client/assets', 'dist/static/assets')
     await copyFolderSync('posts', 'dist/static/posts')
+	await copyFolderSync('src/assets/', 'dist/static/assets')
     // done, delete .vite directory including ssr manifest
     // fs.rmSync(toAbsolute('dist/static/.vite'), { recursive: true })
 })()

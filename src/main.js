@@ -1,16 +1,30 @@
-import { createApp } from 'vue'
+import { createApp as createClientApp, createSSRApp } from 'vue'
 import { createPinia } from 'pinia'
+import { createHead } from 'unhead'
 import router from './router'
 
 import './style.css'
 
 import App from './App.vue'
 
-const store = createPinia();
+const isClient = typeof window !== 'undefined';
 
-const app = createApp(App);
-app.use(router)
-   .use(store)
+const createApp = () => {
+   
+   // Plugins
+   const store = createPinia();
+   const head = createHead();
+   
+   const app = isClient ? createClientApp(App) : createSSRApp(App);
 
+   app.use(router)
+      .use(store)
+      .use(head);
 
-app.mount('#app');
+   isClient ? app.mount('#app') : '';
+
+   return { app, router, head };
+
+}
+
+export { createApp }

@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, createMemoryHistory } from "vue-router";
 
 // Components
 import Index from "/src/pages/Index.vue";
@@ -9,9 +9,14 @@ const routes = [
     { path: '/post/:slug', name:'post', component: Post }
 ];
 
+const isClient = typeof window !== 'undefined'
+
 const router = createRouter({
-    history: createWebHistory(),
-    routes: routes
+    // prerender를 위해서 클라이언트인지 체크
+	history: isClient
+		? createWebHistory(import.meta.env.BASE_URL)
+		: createMemoryHistory(import.meta.env.BASE_URL),
+	routes,
 })
 
 export default router;

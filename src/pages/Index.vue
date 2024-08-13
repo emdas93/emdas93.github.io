@@ -29,6 +29,7 @@
 import { ref } from 'vue';
 import { useMainStore } from '../store/main';
 import { usePostStore } from '../store/post';
+import { useHead, useSeoMeta } from 'unhead';
 
 import matter from 'gray-matter';
 
@@ -36,6 +37,15 @@ const mainStore = useMainStore();
 const postStore = usePostStore();
 
 mainStore.setTitle('BLOG');
+
+useSeoMeta({
+	title: 'emdas93 - ' + 'index page',
+	description: 'emdas93의 블로그입니다.',
+	ogDescription: 'emads93의 블로그입니다.',
+	ogTitle: 'emdas93 - ' + 'index page',
+	ogImage: 'https://example.com/image.png',
+	twitterCard: 'summary_large_image',
+})
 
 const posts = ref([]);
 

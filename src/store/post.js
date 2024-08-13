@@ -69,12 +69,14 @@ export const usePostStore = defineStore('post', {
 
                 return html;
             }
-
-            if (import.meta.env.MODE === 'development') {
+            
+            if (import.meta.env.MODE === 'development' || import.meta.env.MODE === 'generate') {
                 this.markdownFile = await this.markdownFileLoad(this.slug);
-            } else {
-                this.markdownFile = await fetch('https://')
+            } else if (import.meta.env.MODE === 'production'){
+                const res = await fetch('https://raw.githubusercontent.com/emdas93/emdas93.github.io/gh-pages/posts/' + this.slug + '.md')
+                this.markdownFile = await res.text();
             }
+            
 
             const matterObject = matter(this.markdownFile);
 

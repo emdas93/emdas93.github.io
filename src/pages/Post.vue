@@ -21,6 +21,7 @@
 import { onMounted, ref } from 'vue';
 import { useMainStore } from '/src/store/main';
 import { usePostStore } from '/src/store/post.js';
+import { useHead, useSeoMeta } from 'unhead';
 
 import TocContainer from '/src/components/post/TocContainer.vue';
 
@@ -32,6 +33,15 @@ const postData = ref();
 postData.value = await postStore.fetchContent();
 
 mainStore.setTitle(postData.value.frontmatter.title);
+
+useSeoMeta({
+	title: 'emdas93 - ' + postData.value.frontmatter.title,
+	description: postData.value.frontmatter.description,
+	ogDescription: postData.value.frontmatter.description,
+	ogTitle: 'emdas93 - ' + postData.value.frontmatter.title,
+	ogImage: 'https://example.com/image.png',
+	twitterCard: 'summary_large_image',
+})
 
 </script>
 

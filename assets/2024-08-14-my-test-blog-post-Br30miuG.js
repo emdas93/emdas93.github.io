@@ -1,4 +1,4 @@
----
+const n=`---
 title: "#2 TEST POSTING URL문제..."
 description: TEST
 tags: [Vue3, Vuetify, Github Pages, 블로그, 웹 개발]
@@ -33,17 +33,17 @@ updated_at: 2024-08-14 10:07
 
 1. **프로젝트 디렉토리 생성**
     - 터미널에서 새로운 프로젝트 디렉토리를 만듭니다.
-    - `mkdir my-blog && cd my-blog`
+    - \`mkdir my-blog && cd my-blog\`
 
 2. **Vue3 및 Vuetify 설치**
     - Vue3와 Vuetify를 설치하고 초기 설정을 완료합니다.
-    - `npm init vue@latest`
+    - \`npm init vue@latest\`
     - 프로젝트 설정을 완료한 후 Vuetify를 설치합니다.
-    - `npm install vuetify@next`
+    - \`npm install vuetify@next\`
 
 3. **Vuetify 초기화**
     - Vuetify를 프로젝트에 추가하고 설정 파일을 생성합니다.
-    - `npx vuetify@next init`
+    - \`npx vuetify@next init\`
 
 4. **블로그 레이아웃 구성**
     - Vuetify 컴포넌트를 활용해 블로그 레이아웃을 구성합니다.
@@ -55,7 +55,7 @@ updated_at: 2024-08-14 10:07
 
 6. **배포**
     - 프로젝트를 빌드하고 GitHub Pages에 배포합니다.
-    - `npm run build` 후 빌드된 파일을 GitHub Pages에 푸시합니다.
+    - \`npm run build\` 후 빌드된 파일을 GitHub Pages에 푸시합니다.
 
 7. **SEO를 위한 정적페이지 생성**
 	- SSG 생성을 위한 템플릿을 작성합니다.
@@ -77,3 +77,4 @@ updated_at: 2024-08-14 10:07
 - 블로그
 - 웹 개발
 - 
+`;export{n as default};

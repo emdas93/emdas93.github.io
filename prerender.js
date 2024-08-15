@@ -38,12 +38,10 @@ for (let i in routesToPrerender) {
 
 routesToPrerender.push('/');
 
-console.log(routesToPrerender);
 ; (async () => {
     // pre-render each route...
     for (const url of routesToPrerender) {
         const { appHtml, preloadLinks, headTags, htmlAttrs, bodyAttrs, bodyTags } = await render(url, manifest)
-		console.log(headTags);
         const html = template
             .replace('<!--htmlAttrs-->', htmlAttrs)
             .replace('<!--headTags-->', headTags)

@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
+import ViteFonts from 'unplugin-fonts/vite'
+import VueRouter from 'unplugin-vue-router/vite'
+
 import markdownRawPlugin from 'vite-raw-plugin'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
@@ -9,6 +12,15 @@ export default defineConfig({
   base: '/',
   plugins: [
     vue(),
+    VueRouter(),
+    ViteFonts({
+      google: {
+        families: [{
+          name: 'Roboto',
+          styles: 'wght@100;300;400;500;700;900',
+        }],
+      },
+    }),
     markdownRawPlugin({
       fileRegex: /\.md$/
     }),
@@ -35,7 +47,23 @@ export default defineConfig({
       protocolImports: true,
     }),
   ],
+  define: { 'process.env': {} },
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '~': fileURLToPath(new URL('./node_modules', import.meta.url))
+    },
+    extensions: [
+      '.js',
+      '.json',
+      '.jsx',
+      '.mjs',
+      '.ts',
+      '.tsx',
+      '.vue',
+    ],
+  },
   ssr: {
-	noExternal:['tailwindcss']
+    noExternal: ['tailwindcss']
   }
 })

@@ -1,11 +1,11 @@
 import { createApp as createClientApp, createSSRApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createHead } from 'unhead'
-import router from './router'
+import router from '/src/router'
 
-import './style.css'
+import '/src/style.css'
 
-import App from './App.vue'
+import App from '/src/App.vue'
 
 const isClient = typeof window !== 'undefined';
 

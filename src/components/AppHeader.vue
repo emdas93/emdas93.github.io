@@ -1,6 +1,5 @@
 <template>
-    <header class="bg-cover bg-center w-full h-60 overflow-hidden"
-        style="background-image: url('./assets/images/banner.webp')">
+    <header class="bg-cover bg-center w-full h-60 overflow-hidden header-baner">
         <div class="absolute inset-0 flex flex-col bg-black bg-opacity-70 h-60">
             <div class="container flex flex-row justify-between mx-auto my-5 px-5">
                 <div class="">
@@ -20,9 +19,14 @@
 </template>
 
 <script setup>
-import { useMainStore } from '../store/main';
+import { useMainStore } from '/src/store/main';
 
 const mainStore = useMainStore();
 
 
 </script>
+<style>
+.header-baner{
+	background-image: url('/src/assets/images/banner.webp');
+}
+</style>

@@ -1,5 +1,5 @@
 import { renderToString } from 'vue/server-renderer';
-import { createApp } from './main';
+import { createApp } from '/src/main';
 import { renderSSRHead } from '@unhead/ssr';
 
 export async function render(url, manifest) {

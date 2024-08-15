@@ -27,9 +27,9 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useMainStore } from '../store/main';
-import { usePostStore } from '../store/post';
-import { useHead, useSeoMeta } from 'unhead';
+import { useMainStore } from '/src/store/main';
+import { usePostStore } from '/src/store/post';
+import { useHead, useSeoMeta } from '@unhead/vue';
 
 import matter from 'gray-matter';
 
@@ -49,7 +49,7 @@ useSeoMeta({
 
 const posts = ref([]);
 
-if (import.meta.env.MODE === 'development' || import.meta.env.MODE === 'generate') {
+//if (import.meta.env.MODE === 'development' || import.meta.env.MODE === 'generate') {
     await postStore.markdownListLoad();
 
     const files = Object.keys(postStore.markdownFileList);
@@ -66,7 +66,7 @@ if (import.meta.env.MODE === 'development' || import.meta.env.MODE === 'generate
             posts.value.push(putData);
         }
     }
-} else if (import.meta.env.MODE === 'production') {
+//} else if (import.meta.env.MODE === 'production') {
 
-}
+//}
 </script>

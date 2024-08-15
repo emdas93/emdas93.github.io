@@ -19,11 +19,11 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useMainStore } from '../store/main';
-import { usePostStore } from '../store/post.js';
-import { useHead, useSeoMeta } from 'unhead';
+import { useMainStore } from '/src/store/main';
+import { usePostStore } from '/src/store/post.js';
+import { useHead, useSeoMeta } from '@unhead/vue';
 
-import TocContainer from '../components/post/TocContainer.vue';
+import TocContainer from '/src/components/post/TocContainer.vue';
 
 const mainStore = useMainStore();
 const postStore = usePostStore();
@@ -46,5 +46,5 @@ useSeoMeta({
 </script>
 
 <style>
-@import '/node_modules/github-markdown-css/github-markdown-light.css'
+@import '/node_modules/github-markdown-css/github-markdown-light.css';
 </style>

@@ -38,11 +38,12 @@ for (let i in routesToPrerender) {
 
 routesToPrerender.push('/');
 
+console.log(routesToPrerender);
 ; (async () => {
     // pre-render each route...
     for (const url of routesToPrerender) {
         const { appHtml, preloadLinks, headTags, htmlAttrs, bodyAttrs, bodyTags } = await render(url, manifest)
-
+		console.log(headTags);
         const html = template
             .replace('<!--htmlAttrs-->', htmlAttrs)
             .replace('<!--headTags-->', headTags)
@@ -50,9 +51,14 @@ routesToPrerender.push('/');
             .replace('<!--bodyTags-->', bodyTags)
             .replace(`<!--preload-links-->`, preloadLinks)
             .replace(`<!--app-html-->`, appHtml)
+			let index = 'index.html';
+			if (url !== '/') {
+				index = '/' + index;
+			}
+			
 
-        const filePath = 'dist/static' + url + 'index.html'
-
+			
+			const filePath = 'dist/static' + url + index
 
         const fileDirName = path.dirname(filePath);
         console.log(fileDirName);

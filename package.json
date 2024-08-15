@@ -17,6 +17,7 @@
 	"dependencies": {
 		"@tailwindcss/line-clamp": "^0.4.4",
 		"@unhead/ssr": "^1.9.16",
+		"@unhead/vue": "^1.9.16",
 		"bootstrap-icons": "^1.11.3",
 		"github-markdown-css": "^5.6.1",
 		"gray-matter": "^4.0.3",

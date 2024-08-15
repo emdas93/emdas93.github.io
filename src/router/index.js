@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory, createMemoryHistory } from "vue-router";
 
 // Components
-import Index from "../pages/Index.vue";
-import Post from "../pages/Post.vue";
+import Index from "/src/pages/Index.vue";
+import Post from "/src/pages/Post.vue";
 
 const routes = [
     { path: '/', name:'index', component: Index },

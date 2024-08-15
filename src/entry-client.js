@@ -1,2 +1,2 @@
-import { createApp } from './main'
+import { createApp } from '/src/main'
 createApp()

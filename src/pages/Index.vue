@@ -1,7 +1,7 @@
 <template>
     <div class="container mx-auto px-5 my-2">
         <div class="grid grid-cols-4">
-            <div class="col-span-3">
+            <div class="col-span-4 md:col-span-3">
                 <router-link :to="'/post/' + post.data.slug"
                     class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:w-full md:my-3 hover:bg-gray-100"
                     v-for="post in posts">
@@ -17,7 +17,7 @@
                     </div>
                 </router-link>
             </div>
-            <div class="m-3">
+            <div class="m-3 md:block hidden">
                 <nav>
                     <p class="text-sm">Categories</p>
                     <ul class="ps-3">

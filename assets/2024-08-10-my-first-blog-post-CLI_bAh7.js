@@ -1,15 +1,15 @@
 const n=`---
-title: "#2 TEST POSTING URL문제..."
-description: TEST
+title: "#1 Vue3와 Vuetify 그리고 Github Pages로 블로그 만들기 - 준비물 및 간략 가이드"
+description: Vue3와 Vuetify를 사용해 Github Pages에 블로그를 만드는 과정을 단계별로 정리한 글입니다.
 tags: [Vue3, Vuetify, Github Pages, 블로그, 웹 개발]
 author: emdas93
-category: [개발, 블로그]
-permalink: /post/2024-08-14-my-first-test-post
-slug: 2024-08-14-my-first-test-post
+category: 개발
+permalink: /post/2024-08-10-my-first-blog-post
+slug: 2024-08-10-my-first-blog-post
 image: ''
 published: true
-created_at: 2024-08-14 10:07
-updated_at: 2024-08-14 10:07
+created_at: 2024-07-26 10:07
+updated_at: 2024-07-26 10:07
 ---
 
 # Vue3와 Vuetify, 그리고 Github Pages로 나만의 블로그 만들기
@@ -76,5 +76,4 @@ updated_at: 2024-08-14 10:07
 - Github Pages
 - 블로그
 - 웹 개발
-- 
-`;export{n as default};
+- `;export{n as default};

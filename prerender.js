@@ -70,7 +70,7 @@ routesToPrerender.push('/');
     }
 
     await copyFolderSync('dist/client/assets', 'dist/static/assets')
-    await copyFolderSync('posts', 'dist/static/posts')
+    // await copyFolderSync('posts', 'dist/static/posts')
 	await copyFolderSync('src/assets/', 'dist/static/assets')
     // done, delete .vite directory including ssr manifest
     // fs.rmSync(toAbsolute('dist/static/.vite'), { recursive: true })

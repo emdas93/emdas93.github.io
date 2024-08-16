@@ -73,8 +73,9 @@ export const usePostStore = defineStore('post', {
             if (import.meta.env.MODE === 'development' || import.meta.env.MODE === 'generate') {
                 this.markdownFile = await this.markdownFileLoad(this.slug);
             } else if (import.meta.env.MODE === 'production'){
-                const res = await fetch('https://raw.githubusercontent.com/emdas93/emdas93.github.io/gh-pages/posts/' + this.slug + '.md')
-                this.markdownFile = await res.text();
+                this.markdownFile = await this.markdownFileLoad(this.slug);
+                // const res = await fetch('https://raw.githubusercontent.com/emdas93/emdas93.github.io/gh-pages/posts/' + this.slug + '.md')
+                // this.markdownFile = await res.text();
             }
             
 

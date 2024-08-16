@@ -21,10 +21,22 @@
 import { onMounted, ref } from 'vue';
 import { useMainStore } from '/src/store/main';
 import { usePostStore } from '/src/store/post.js';
-import { useHead, useSeoMeta } from '@unhead/vue';
+import { useSeoMeta } from '@unhead/vue';
 
 import TocContainer from '/src/components/post/TocContainer.vue';
+onMounted(()=> {
+    window.onload = function() {
+    var pathname = window.location.pathname;
 
+    // URL 끝에 '/'가 없고, 파일명도 포함되어 있지 않은 경우
+    if (!pathname.endsWith('/') && !pathname.includes('.')) {
+        var newPathname = pathname + '/';
+        var newUrl = window.location.origin + newPathname + window.location.search + window.location.hash;
+
+        window.location.replace(newUrl);
+    }
+};
+})
 const mainStore = useMainStore();
 const postStore = usePostStore();
 

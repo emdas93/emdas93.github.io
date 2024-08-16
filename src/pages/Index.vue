@@ -29,7 +29,7 @@
 import { ref } from 'vue';
 import { useMainStore } from '/src/store/main';
 import { usePostStore } from '/src/store/post';
-import { useHead, useSeoMeta } from '@unhead/vue';
+import { useSeoMeta } from '@unhead/vue';
 
 import matter from 'gray-matter';
 

@@ -3,10 +3,12 @@ import { createRouter, createWebHistory, createMemoryHistory } from "vue-router/
 // Components
 import Index from "/src/pages/Index.vue";
 import Post from "/src/pages/Post.vue";
+import Category from "/src/pages/Category.vue";
 
 const routes = [
 	{ path: '/', name: 'index', component: Index },
-	{ path: '/post/:slug', name: 'post', component: Post }
+	{ path: '/post/:slug', name: 'post', component: Post },
+	{ path: '/post/category/:category', name: 'category', component: Category }
 ];
 
 const isClient = typeof window !== 'undefined'

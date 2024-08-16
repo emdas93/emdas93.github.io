@@ -4,7 +4,7 @@
             <div class="col-span-3">
                 <router-link :to="'/post/' + post.data.slug"
                     class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:w-full md:my-3 hover:bg-gray-100"
-                    v-for="post in posts">
+                    v-for="post in posts" v-show="post.data.category === category">
                     <!-- <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="/src/assets/images/test.png" alt="TEXT"> -->
                     <div class="flex flex-col justify-between p-4 leading-normal">
                         <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900">{{ post.data.title }}</h5>
@@ -30,18 +30,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useMainStore } from '/src/store/main';
 import { usePostStore } from '/src/store/post';
 import { useSeoMeta } from '@unhead/vue';
+import { useRoute } from 'vue-router';
 
 import matter from 'gray-matter';
 
 const mainStore = useMainStore();
 const postStore = usePostStore();
-
-mainStore.setTitle('BLOG');
-mainStore.setTags([]);
 
 useSeoMeta({
     title: 'emdas93 - ' + 'index page',
@@ -53,7 +51,14 @@ useSeoMeta({
 })
 
 const posts = ref([]);
+const route = useRoute();
 const categories = ref([]);
+const category = ref('');
+
+watch(() => route.params.category , (newValue, oldValue) => {
+    category.value = route.params.category;
+    mainStore.setTitle(category.value);
+})
 
 //if (import.meta.env.MODE === 'development' || import.meta.env.MODE === 'generate') {
 await postStore.markdownListLoad();
@@ -77,9 +82,13 @@ for (let i = 0 ; i < posts.value.length ; ++i){
     categories.value.push(posts.value[i].data.category);
 }
 
+category.value = route.params.category;
+
 let set = new Set(categories.value);
 categories.value = [...set];
 
+mainStore.setTitle(category.value);
+mainStore.setTags([]);
 
 //} else if (import.meta.env.MODE === 'production') {
 

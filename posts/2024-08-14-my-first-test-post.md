@@ -3,7 +3,7 @@ title: "#2 TEST POSTING URL문제..."
 description: TEST
 tags: [Vue3, Vuetify, Github Pages, 블로그, 웹 개발]
 author: emdas93
-category: 개발
+category: 테크
 permalink: /post/2024-08-14-my-first-test-post
 slug: 2024-08-14-my-first-test-post
 image: ''

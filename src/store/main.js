@@ -4,7 +4,8 @@ export const useMainStore = defineStore('main', {
     id:'main',
     store: () => {
         return {
-            title: ''
+            title: '',
+            tags: [],
         }
     },
     getters: {
@@ -16,6 +17,9 @@ export const useMainStore = defineStore('main', {
     actions: {
         setTitle(value){
             this.title = value;
+        },
+        setTags(value) {
+            this.tags = value;
         }
     }
 })

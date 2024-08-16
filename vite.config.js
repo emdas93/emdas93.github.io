@@ -62,6 +62,5 @@ export default defineConfig({
     ],
   },
   ssr: {
-    noExternal: ['tailwindcss']
   }
 })

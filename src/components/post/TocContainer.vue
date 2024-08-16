@@ -76,7 +76,23 @@ if (isClient) {
 		}
 	};
 
+	const applyFixedOnTop = () => {
+		const tocElement = document.getElementsByClassName('toc-container')[0];
+		const headerElement = document.getElementById('header');
+		const rect = headerElement.getBoundingClientRect();
+		if(rect.bottom < 1) {
+			tocElement.classList.add('fixed');
+			tocElement.classList.add('top-0');
+			tocElement.classList.add('mt-3');
+		} else {
+			tocElement.classList.remove('fixed');
+			tocElement.classList.remove('top-0');
+			tocElement.classList.remove('mt-3');
+		}
+	}
+
 	document.addEventListener('scroll', scrollspy);
+	document.addEventListener('scroll', applyFixedOnTop);
 }
 </script>
 

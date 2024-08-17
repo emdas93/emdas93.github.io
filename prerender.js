@@ -31,7 +31,7 @@ const routesToPrerender = fs.readdirSync(toAbsolute('./posts')).map((file) => {
 });
 
 for (let i in routesToPrerender) {
-    if (routesToPrerender[i] === '/post/template') {
+    if (routesToPrerender[i] === '/post/template' || routesToPrerender[i] === '/post/assets') {
         routesToPrerender.splice(i, 1);
     }
 }
@@ -59,7 +59,7 @@ routesToPrerender.push('/');
 			const filePath = 'dist/static' + url + index
 
         const fileDirName = path.dirname(filePath);
-        console.log(fileDirName);
+
         const existDirectory = fs.existsSync(fileDirName);
         if (!existDirectory) {
             fs.mkdirSync(fileDirName, { recursive: true });
@@ -70,7 +70,7 @@ routesToPrerender.push('/');
     }
 
     await copyFolderSync('dist/client/assets', 'dist/static/assets')
-    // await copyFolderSync('posts', 'dist/static/posts')
+    await copyFolderSync('posts', 'dist/static/posts')
 	await copyFolderSync('src/assets/', 'dist/static/assets')
     // done, delete .vite directory including ssr manifest
     // fs.rmSync(toAbsolute('dist/static/.vite'), { recursive: true })

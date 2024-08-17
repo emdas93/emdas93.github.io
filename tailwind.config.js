@@ -6,6 +6,7 @@ export default {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
 	  "./src/*.{vue, js, ts, jsx, tsx}"
   ],
+  darkMode:'class',
   theme: {
     extend: {
       backgroundImage: {

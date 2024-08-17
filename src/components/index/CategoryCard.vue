@@ -12,7 +12,10 @@
 
 <script setup>
 defineProps({
-    categories:[],
+    categories:{
+        type: Array,
+        default: [],
+    },
 })
 </script>
 

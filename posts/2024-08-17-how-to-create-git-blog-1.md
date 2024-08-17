@@ -1,15 +1,15 @@
 ---
-title: "#1 Vue3와 Vuetify 그리고 Github Pages로 블로그 만들기 - 준비물 및 간략 가이드"
-description: Vue3와 Vuetify를 사용해 Github Pages에 블로그를 만드는 과정을 단계별로 정리한 글입니다.
-tags: [Vue3, Vuetify, Github Pages, 블로그, 웹 개발]
+title: "#1 Vue3 + TailwindCSS + Github Pages로 블로그 제작하기"
+description: Vue3, TailwindCSS 프로젝트 구성
+tags: [Vue3, TailwindCSS, Github Pages, 블로그, 웹 개발]
 author: emdas93
-category: 개발
-permalink: /post/2024-08-10-my-first-blog-post
-slug: 2024-08-10-my-first-blog-post
-image: ''
+category: Vue3
+permalink: /post/2024-08-17-how-to-create-git-blog-1
+slug: 2024-08-17-how-to-create-git-blog-1
+image: '/posts/assets/2024-08-17-how-to-create-git-blog-1/title.png'
 published: true
-created_at: 2024-07-26 10:07
-updated_at: 2024-07-26 10:07
+created_at: 2024-08-17 12:45:00
+updated_at: 2024-08-17 12:45:00
 ---
 
 # Vue3와 Vuetify, 그리고 Github Pages로 나만의 블로그 만들기

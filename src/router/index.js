@@ -3,11 +3,13 @@ import { createRouter, createWebHistory, createMemoryHistory } from "vue-router/
 // Components
 import IndexPage from "/src/pages/IndexPage.vue";
 import PostPage from "/src/pages/PostPage.vue";
+import MarkdownEditorPage from "/src/pages/MarkdownEditorPage.vue";
 
 const routes = [
 	{ path: '/', name: 'index', component: IndexPage },
 	{ path: '/post/category/:category', name: 'category', component: IndexPage },
-	{ path: '/post/:slug', name: 'post', component: PostPage }
+	{ path: '/post/:slug', name: 'post', component: PostPage },
+    { path: '/editor', name: 'editor', component: MarkdownEditorPage },
 ];
 
 const isClient = typeof window !== 'undefined'

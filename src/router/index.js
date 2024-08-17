@@ -1,14 +1,13 @@
 import { createRouter, createWebHistory, createMemoryHistory } from "vue-router/auto";
 // import { routes } from 'vue-router/auto-routes'
 // Components
-import Index from "/src/pages/Index.vue";
-import Post from "/src/pages/Post.vue";
-import Category from "/src/pages/Category.vue";
+import IndexPage from "/src/pages/IndexPage.vue";
+import PostPage from "/src/pages/PostPage.vue";
 
 const routes = [
-	{ path: '/', name: 'index', component: Index },
-	{ path: '/post/:slug', name: 'post', component: Post },
-	{ path: '/post/category/:category', name: 'category', component: Category }
+	{ path: '/', name: 'index', component: IndexPage },
+	{ path: '/post/category/:category', name: 'category', component: IndexPage },
+	{ path: '/post/:slug', name: 'post', component: PostPage }
 ];
 
 const isClient = typeof window !== 'undefined'

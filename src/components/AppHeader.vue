@@ -8,6 +8,7 @@
                 <nav class="flex flex-row">
                     <router-link to="/" class="px-3 text-lg font-bold text-white">HOME</router-link>
                     <router-link to="/editor" class="px-3 text-lg font-bold text-white">EDITOR</router-link>
+                    <router-link to="/image-generator" class="px-3 text-lg font-bold text-white">GENERATOR</router-link>
                     <router-link to="/" class="px-3 text-lg font-bold text-white">INFO</router-link>
                 </nav>
             </div>

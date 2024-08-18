@@ -133,7 +133,7 @@
                 </button>
             </form>
 
-            <div class="w-1/2 break-words border m-1 markdown-body h-full p-2" v-html="convertedContent">
+            <div class="w-1/2 break-words border m-1 markdown-body h-full p-2" v-html="convertedContent" ref="markdownBody">
 
             </div>
         </div>
@@ -141,7 +141,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import { useMainStore } from '/src/store/main';
 import { useSeoMeta } from '@unhead/vue';
 import matter from 'gray-matter';
@@ -155,8 +155,7 @@ const mainStore = useMainStore();
 
 const convertedContent = ref('');
 
-const rawText = ref(`
----
+const rawText = ref(`---
 title: "#1 Vue3 + TailwindCSS + Github Pages로 블로그 제작하기"
 description: Vue3, TailwindCSS 프로젝트 구성
 tags: [Vue3, TailwindCSS, Github Pages, 블로그, 웹 개발]
@@ -168,8 +167,7 @@ image: '/posts/assets/2024-08-17-how-to-create-git-blog-1/title.png'
 published: true
 created_at: 2024-08-17 12:45:00
 updated_at: 2024-08-17 12:45:00
----
-`);
+---`);
 
 
 
@@ -187,7 +185,10 @@ useSeoMeta({
     twitterCard: 'summary_large_image',
 })
 
-const convertRawText = computed(() => {
+onMounted(() => {
+})
+
+const convertRawText = (() => {
     const md = markdownIt({ html: true })
         .use(markdownItAnchor, { slugify: (s) => { return uslug(s) }, })
         .use(markdownItTocDoneRight, {
@@ -196,10 +197,8 @@ const convertRawText = computed(() => {
             callback: (html, ast) => {
             }
         });
-    
-    const frontmatter = matter(rawText.value);
-    const content = frontmatter.content;
-    console.log(content);
+    const matterObject = matter(rawText.value);
+    const content = matterObject.content;
     convertedContent.value = md.render(content);
 });
 

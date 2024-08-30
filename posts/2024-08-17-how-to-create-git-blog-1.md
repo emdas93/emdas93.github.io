@@ -1,6 +1,6 @@
 ---
 title: "#1 Vue3 + TailwindCSS + Github Pages로 블로그 제작하기"
-description: Vue3, TailwindCSS 프로젝트 구성
+description: Vue3 프로젝트 구성
 tags: [Vue3, TailwindCSS, Github Pages, 블로그, 웹 개발]
 author: emdas93
 category: Vue3
@@ -12,68 +12,68 @@ created_at: 2024-08-17 12:45:00
 updated_at: 2024-08-17 12:45:00
 ---
 
-# Vue3와 Vuetify, 그리고 Github Pages로 나만의 블로그 만들기
+## 1. Vite Vue 설정
 
-안녕하세요.
+첫 번째로 빌드 도구 설치와 Vue3 설치가 필요합니다.
 
-최근에 Vue3와 Vuetify를 공부하면서 이를 활용해 Github Pages에 블로그를 만들어보았습니다. 흔히 Github 블로그라고 하면 Jekyll이라는 정적 사이트 생성기(SSG)를 많이 떠올리실 텐데요. 저도 Jekyll을 사용해봤지만, 이번에는 제가 잘 알고 있는 언어로 블로그를 만들어 자유도를 높여보고 싶었습니다. 
+저는 빌드 도구로 Vite를 사용할 예정입니다.
 
-또한, Vue3를 이용해 실제 프로젝트를 진행하며 배운 내용을 정리할 수 있는 좋은 기회가 될 것 같았습니다. 그래서 오늘은 Vue3와 Vuetify, 그리고 Github Pages를 이용해 블로그를 만드는 과정을 단계별로 정리해보려고 합니다.
+아래 명령어를 통해 Vite 프로젝트를 생성해줍니다.
 
-## 준비물
+``` bash
+npm create vite@latest my-blog
+```
 
-블로그를 만들기 위해서는 다음과 같은 준비물이 필요합니다:
+프레임워크와 언어를 아래 이미지와 같이 선택합니다.
 
-- **GitHub 계정**: 블로그를 호스팅할 저장소가 필요합니다.
-- **Node.js 및 npm**: 패키지 관리를 위해 필요합니다.
-- **Vuetify**: Vue.js를 위한 Material Design 컴포넌트 프레임워크입니다.
-- **Git**: 버전 관리와 GitHub Pages 배포를 위해 필요합니다.
+![Image1](/src/assets/images/posts/how-to-create-git-blog-1/how-to-create-git-blog-image-1.png)
 
-## 단계별 가이드
+![Image2](/src/assets/images/posts/how-to-create-git-blog-1/how-to-create-git-blog-image-2.png)
 
-1. **프로젝트 디렉토리 생성**
-    - 터미널에서 새로운 프로젝트 디렉토리를 만듭니다.
-    - `mkdir my-blog && cd my-blog`
+![Image3](/src/assets/images/posts/how-to-create-git-blog-1/how-to-create-git-blog-image-3.png)
 
-2. **Vue3 및 Vuetify 설치**
-    - Vue3와 Vuetify를 설치하고 초기 설정을 완료합니다.
-    - `npm init vue@latest`
-    - 프로젝트 설정을 완료한 후 Vuetify를 설치합니다.
-    - `npm install vuetify@next`
+선택이 끝나셨다면 3번째 이미지와 같이 생성된 폴더로 이동하여 `npm install` 을 실행하고 `npm run dev` 명령어롤 차례대로 실행해줍니다.
 
-3. **Vuetify 초기화**
-    - Vuetify를 프로젝트에 추가하고 설정 파일을 생성합니다.
-    - `npx vuetify@next init`
+NPM 라이브러리들을 설치하고 서버 실행 명령어를 입력하여
 
-4. **블로그 레이아웃 구성**
-    - Vuetify 컴포넌트를 활용해 블로그 레이아웃을 구성합니다.
-    - 헤더, 사이드바, 본문 영역을 나누어 디자인합니다.
+아래와 같은 화면이 나온다면 성공입니다.
 
-5. **GitHub Pages 설정**
-    - GitHub에 새로운 저장소를 생성하고 프로젝트를 푸시합니다.
-    - GitHub Pages를 활성화하여 저장소를 통해 블로그를 호스팅합니다.
+![Image4](/src/assets/images/posts/how-to-create-git-blog-1/how-to-create-git-blog-image-4.png)
 
-6. **배포**
-    - 프로젝트를 빌드하고 GitHub Pages에 배포합니다.
-    - `npm run build` 후 빌드된 파일을 GitHub Pages에 푸시합니다.
+![Image5](/src/assets/images/posts/how-to-create-git-blog-1/how-to-create-git-blog-image-5.png)
 
-7. **SEO를 위한 정적페이지 생성**
-	- SSG 생성을 위한 템플릿을 작성합니다.
-	- entry-server.js 파일을 작성합니다.
-	- entry-client.js 파일을 작성합니다.
-	- prerender.js 파일을 작성합니다.
+## 2. TailwindCSS 설치
 
-앞으로 여러 포스트를 통해 각 단계별 자세한 내용을 다룰 예정이니 많은 기대 부탁드립니다. Vue3와 Vuetify를 사용한 블로그 만들기 여정에 함께해 주세요!
+TailwindCSS 설치를 위해 아래 명령어를 실행합니다.
 
-감사합니다.
+``` bash
+npm install -D tailwindcss
+npx tailwindcss init
+```
 
----
+명령어를 차례대로 실행하였다면 `tailwind.config.js` 파일이 생성됩니다.
 
-## 태그
+tailwind.config.js 파일을 아래와 같이 수정합니다.
 
-- Vue3
-- Vuetify
-- Github Pages
-- 블로그
-- 웹 개발
-- 
+``` javaScript
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{html,js}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+
+
+
+
+
+
+
+
+
+출처 : [https://ko.vitejs.dev/guide/](https://ko.vitejs.dev/guide/) <br>
+출처 : [https://tailwindcss.com/docs/installation](https://tailwindcss.com/docs/installation)

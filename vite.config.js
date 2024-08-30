@@ -62,5 +62,8 @@ export default defineConfig({
     ],
   },
   ssr: {
+  },
+  server: {
+    port: 3000
   }
 })

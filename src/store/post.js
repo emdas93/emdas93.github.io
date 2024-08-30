@@ -40,7 +40,8 @@ export const usePostStore = defineStore('post', {
                         toc = `<nav>${toc}</nav>`;
                         this.toc = toc;
                     }
-                });
+                })
+                .use();
 
             function generateToc(node) {
                 let html = "";

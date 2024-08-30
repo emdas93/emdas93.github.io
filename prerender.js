@@ -37,7 +37,7 @@ for (let i in routesToPrerender) {
 }
 
 routesToPrerender.push('/');
-routesToPrerender.push('/image-generate');
+routesToPrerender.push('/image-generator');
 routesToPrerender.push('/editor');
 
 ; (async () => {

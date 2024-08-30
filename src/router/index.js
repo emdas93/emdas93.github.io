@@ -11,7 +11,7 @@ const routes = [
 	{ path: '/post/category/:category', name: 'category', component: IndexPage },
 	{ path: '/post/:slug', name: 'post', component: PostPage },
     { path: '/editor', name: 'editor', component: MarkdownEditorPage },
-    { path: '/image-generator', name: 'editor', component: ImageGeneratePage },
+    { path: '/image-generator', name: 'image-generator', component: ImageGeneratePage },
 ];
 
 const isClient = typeof window !== 'undefined'

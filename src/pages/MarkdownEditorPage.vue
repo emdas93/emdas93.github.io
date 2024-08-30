@@ -122,7 +122,7 @@
                     <div class="px-4 py-2 bg-white rounded-b-lg dark:bg-gray-800">
                         <label for="editor" class="sr-only">Publish post</label>
                         <textarea id="editor" rows="20"
-                            class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400 whitespace-pre-line"
+                            class="block w-full p-1 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400 whitespace-pre-line"
                             placeholder="Write an article..."
                             v-model="rawText" v-on:keyup="convertRawText"></textarea>
                     </div>

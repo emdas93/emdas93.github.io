@@ -1,4 +1,4 @@
----
+const n=`---
 title: "#1 Vue3 + TailwindCSS + Github Pages로 블로그 제작하기"
 description: Vue3 프로젝트 구성
 tags: [Vue3, TailwindCSS, Github Pages, 블로그, 웹 개발]
@@ -20,9 +20,9 @@ updated_at: 2024-08-17 12:45:00
 
 아래 명령어를 통해 Vite 프로젝트를 생성해줍니다.
 
-``` bash
+\`\`\` bash
 npm create vite@latest my-blog
-```
+\`\`\`
 
 프레임워크와 언어를 아래 이미지와 같이 선택합니다.
 
@@ -32,7 +32,7 @@ npm create vite@latest my-blog
 
 ![Image3](/src/assets/images/posts/how-to-create-git-blog-1/how-to-create-git-blog-image-3.png)
 
-선택이 끝나셨다면 3번째 이미지와 같이 생성된 폴더로 이동하여 `npm install` 을 실행하고 `npm run dev` 명령어롤 차례대로 실행해줍니다.
+선택이 끝나셨다면 3번째 이미지와 같이 생성된 폴더로 이동하여 \`npm install\` 을 실행하고 \`npm run dev\` 명령어롤 차례대로 실행해줍니다.
 
 NPM 라이브러리들을 설치하고 서버 실행 명령어를 입력하여
 
@@ -46,16 +46,16 @@ NPM 라이브러리들을 설치하고 서버 실행 명령어를 입력하여
 
 TailwindCSS 설치를 위해 아래 명령어를 실행합니다.
 
-``` bash
+\`\`\` bash
 npm install -D tailwindcss
 npx tailwindcss init
-```
+\`\`\`
 
-명령어를 차례대로 실행하였다면 `tailwind.config.js` 파일이 생성됩니다.
+명령어를 차례대로 실행하였다면 \`tailwind.config.js\` 파일이 생성됩니다.
 
 tailwind.config.js 파일을 아래와 같이 수정합니다.
 
-``` javaScript
+\`\`\` javaScript
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,js}"],
@@ -64,7 +64,7 @@ module.exports = {
   },
   plugins: [],
 }
-```
+\`\`\`
 
 
 
@@ -76,4 +76,4 @@ module.exports = {
 
 
 출처 : [https://ko.vitejs.dev/guide/](https://ko.vitejs.dev/guide/) <br>
-출처 : [https://tailwindcss.com/docs/installation](https://tailwindcss.com/docs/installation)
+출처 : [https://tailwindcss.com/docs/installation](https://tailwindcss.com/docs/installation)`;export{n as default};

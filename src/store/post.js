@@ -4,7 +4,9 @@ import { useRoute, useRouter } from "vue-router";
 // Markdown Imports ----------------------------------*/
 import markdownIt from 'markdown-it';
 import markdownItAnchor from 'markdown-it-anchor';
-import markdownItTocDoneRight from 'markdown-it-toc-done-right'
+import markdownItTocDoneRight from 'markdown-it-toc-done-right';
+import markdownItHighlightJS from 'markdown-it-highlightjs';
+import hljs from "highlight.js";
 import matter from 'gray-matter';
 import uslug from "uslug";
 /*----------------------------------------------------*/
@@ -30,8 +32,9 @@ export const usePostStore = defineStore('post', {
 
             this.slug = route.params.slug;
 
-            const md = markdownIt({ html: true })
-                .use(markdownItAnchor, { slugify: (s) => { return uslug(s) }, })
+            const md = markdownIt({
+                html: true,
+            }).use(markdownItAnchor, { slugify: (s) => { return uslug(s) }, })
                 .use(markdownItTocDoneRight, {
                     containerClass: 'toc', // TOC 컨테이너 클래스 설정
                     slugify: (s) => { return uslug(s) },
@@ -40,8 +43,9 @@ export const usePostStore = defineStore('post', {
                         toc = `<nav>${toc}</nav>`;
                         this.toc = toc;
                     }
-                })
-                .use();
+                }).use(markdownItHighlightJS, {
+                    hljs: hljs
+                });
 
             function generateToc(node) {
                 let html = "";
@@ -70,15 +74,15 @@ export const usePostStore = defineStore('post', {
 
                 return html;
             }
-            
+
             if (import.meta.env.MODE === 'development' || import.meta.env.MODE === 'generate') {
                 this.markdownFile = await this.markdownFileLoad(this.slug);
-            } else if (import.meta.env.MODE === 'production'){
+            } else if (import.meta.env.MODE === 'production') {
                 this.markdownFile = await this.markdownFileLoad(this.slug);
                 // const res = await fetch('https://raw.githubusercontent.com/emdas93/emdas93.github.io/gh-pages/posts/' + this.slug + '.md')
                 // this.markdownFile = await res.text();
             }
-            
+
 
             const matterObject = matter(this.markdownFile);
 

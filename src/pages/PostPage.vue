@@ -45,4 +45,5 @@ useSeoMeta({
 
 <style>
 @import '/node_modules/github-markdown-css/github-markdown-light.css';
+@import '/node_modules/highlight.js/styles/vs.css';
 </style>

@@ -55,7 +55,7 @@ npx tailwindcss init
 
 tailwind.config.js 파일을 아래와 같이 수정합니다.
 
-``` javaScript
+``` js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,js}"],

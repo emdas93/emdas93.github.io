@@ -1,7 +1,68 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-// https://vite.dev/config/
+import ViteFonts from 'unplugin-fonts/vite'
+import VueRouter from 'unplugin-vue-router/vite'
+
+import markdownRawPlugin from 'vite-raw-plugin'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
+
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  base: '/',
+  plugins: [
+    vue(),
+    VueRouter(),
+    ViteFonts({
+      google: {
+        families: [{
+          name: 'Roboto',
+          styles: 'wght@100;300;400;500;700;900',
+        }],
+      },
+    }),
+    markdownRawPlugin({
+      fileRegex: /\.md$/
+    }),
+    nodePolyfills({
+      // To add only specific polyfills, add them here. If no option is passed, adds all polyfills
+      include: ['path'],
+      // To exclude specific polyfills, add them to this list. Note: if include is provided, this has no effect
+      exclude: [
+        'http', // Excludes the polyfill for `http` and `node:http`.
+      ],
+      // Whether to polyfill specific globals.
+      globals: {
+        Buffer: true, // can also be 'build', 'dev', or false
+        global: true,
+        process: true,
+        localStorage: true,
+      },
+      // Override the default polyfills for specific modules.
+      overrides: {
+        // Since `fs` is not supported in browsers, we can use the `memfs` package to polyfill it.
+        fs: 'memfs',
+      },
+      // Whether to polyfill `node:` protocol imports.
+      protocolImports: true,
+    }),
+  ],
+  define: { 'process.env': {} },
+  resolve: {
+    alias: {
+    },
+    extensions: [
+      '.js',
+      '.json',
+      '.jsx',
+      '.mjs',
+      '.ts',
+      '.tsx',
+      '.vue',
+    ],
+  },
+  ssr: {
+  },
+  server: {
+  }
 })

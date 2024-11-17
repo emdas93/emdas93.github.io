@@ -1,20 +1,18 @@
 <template>
-
-  <BlogHeader :sub-title="frontmatter.title"/>
+  <BlogHeader :sub-title="frontmatter.title" />
   <main>
     <div class="container mx-auto flex">
       <div class="flex flex-row container mt-5">
-        <div class="markdown-body" v-html="content">
+          <div class="markdown-body" v-html="content">
 
-        </div>
-        <div class="w-40">
-          <TocContainer :content="toc" />
+          </div>
+          <div class="w-40">
+            <TocContainer :content="toc" />
+          </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
   <BlogFooter />
-
 
 </template>
 
@@ -41,11 +39,10 @@ import testMD from '/posts/test.md';
 const route = useRoute();
 const slug = route.params.slug;
 
-console.log(route.params.slug);
-
 const frontmatter = ref({});
 const toc = ref({});
 const content = ref("");
+const markdownFile = ref();
 
 const md = markdownIt({
   html: true,
@@ -60,6 +57,32 @@ const md = markdownIt({
   }).use(markdownItHighlightJS, {
     hljs: hljs
   });
+
+
+if (import.meta.env.MODE === 'development' || import.meta.env.MODE === 'generate') {
+  markdownFile.value = await markdownFileLoad(slug);
+} else if (import.meta.env.MODE === 'production') {
+  markdownFile.value = await markdownFileLoad(slug);
+  // const res = await fetch('https://raw.githubusercontent.com/emdas93/emdas93.github.io/gh-pages/posts/' + this.slug + '.md')
+  // this.markdownFile = await res.text();
+}
+
+console.log(markdownFile.value);
+const matterObject = matter(markdownFile.value);
+
+frontmatter.value = matterObject.data;
+
+content.value = md.render(matterObject.content);
+
+
+useSeoMeta({
+  title: 'emdas93 - ' + frontmatter.value.title,
+  description: frontmatter.value.description,
+  ogDescription: frontmatter.value.description,
+  ogTitle: 'emdas93 - ' + frontmatter.value.title,
+  ogImage: 'https://example.com/image.png',
+  twitterCard: 'summary_large_image',
+})
 
 function generateToc(node) {
   let html = "";
@@ -89,29 +112,30 @@ function generateToc(node) {
   return html;
 }
 
+async function markdownFileLoad(filename) {
+  try {
+    const filePath = `/posts/${filename}.md`;
+    var markdownFileList = {};
+    markdownFileList = await markdownListLoad();
 
-const matterObject = matter(testMD);
+    if (markdownFileList[filePath]) {
+      const module = await markdownFileList[filePath]();
+      return module.default;
+    } else {
+      console.error(`File ${filename}.md not found`);
+      return '';
+    }
 
-frontmatter.value = matterObject.data;
+  } catch (error) {
+    console.error(`Failed to load ${filename}.md`, error);
+    return '';
+  }
+}
 
-content.value = md.render(matterObject.content);
-
-// const data = {
-//   frontmatter: frontmatter,
-//   toc: toc,
-//   content: content
-// }
-
-// console.log(data);
-
-useSeoMeta({
-  title: 'emdas93 - ' + frontmatter.value.title,
-  description: frontmatter.value.description,
-  ogDescription: frontmatter.value.description,
-  ogTitle: 'emdas93 - ' + frontmatter.value.title,
-  ogImage: 'https://example.com/image.png',
-  twitterCard: 'summary_large_image',
-})
+async function markdownListLoad() {
+  var markdownFileList = await import.meta.glob('/posts/*.md');
+  return markdownFileList;
+}
 
 </script>
 

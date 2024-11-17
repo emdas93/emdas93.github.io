@@ -1,5 +1,5 @@
 <template>
-  <BlogLayout></BlogLayout>
+    <RouterView />
 </template>
 
 <script setup lang="ts">

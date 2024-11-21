@@ -1,12 +1,10 @@
 <template>
 
-  <BlogHeader :sub-title="frontmatter.title"/>
+  <BlogHeader :sub-title="frontmatter.title" />
   <main>
     <div class="container mx-auto flex">
       <div class="flex flex-row container mt-5">
-        <div class="markdown-body" v-html="content">
-
-        </div>
+        <div class="markdown-body" v-html="content"></div>
         <div class="w-40">
           <TocContainer :content="toc" />
         </div>
@@ -19,7 +17,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, Suspense, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import BlogHeader from '../layouts/BlogHeader.vue';
 import BlogFooter from '../layouts/BlogFooter.vue';
@@ -40,8 +38,6 @@ import testMD from '/posts/test.md';
 
 const route = useRoute();
 const slug = route.params.slug;
-
-console.log(route.params.slug);
 
 const frontmatter = ref({});
 const toc = ref({});
@@ -88,13 +84,25 @@ function generateToc(node) {
 
   return html;
 }
+onMounted(async () => {
+  console.log("TET");
+  var markdownFile = {};
+  if (import.meta.env.MODE === 'development' || import.meta.env.MODE === 'generate') {
+    var res = await fetch('https://raw.githubusercontent.com/emdas93/emdas93.github.io/gh-pages/posts/' + slug + '.md')
+    markdownFile = await res.text();
+    console.log(markdownFile);
+  } else if (import.meta.env.MODE === 'production') {
+    var res = await fetch('https://raw.githubusercontent.com/emdas93/emdas93.github.io/gh-pages/posts/' + slug + '.md')
+    markdownFile = await res.text();
+  }
+  console.log(markdownFile);
+  const matterObject = matter(markdownFile);
 
+  frontmatter.value = matterObject.data;
 
-const matterObject = matter(testMD);
+  content.value = md.render(matterObject.content);
+})
 
-frontmatter.value = matterObject.data;
-
-content.value = md.render(matterObject.content);
 
 // const data = {
 //   frontmatter: frontmatter,

@@ -8,10 +8,8 @@
     <router-link :to="props.to">
       <div class="flex-1 flex flex-col mx-5 card-content">
         <div class="flex-1">
-          <h3 class="text-lg">Card Header Text</h3>
-          <p class="text-base">Hello World!!! This is the blog system you want.</p>
-          <p class="text-base">This blog is created by Vue3</p>
-          <p class="text-base">Contact to me plz...</p>
+          <h3 class="text-lg">카드 헤더</h3>
+          <p class="text-base">본문내용</p>
         </div>
 
         <div>

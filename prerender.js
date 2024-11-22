@@ -30,6 +30,8 @@ const routesToPrerender = fs.readdirSync(toAbsolute('./posts')).map((file) => {
   return routeName;
 });
 
+routesToPrerender.push('/wxhack');
+
 for (let i in routesToPrerender) {
   if (routesToPrerender[i] === '/post/template' || routesToPrerender[i] === '/post/assets') {
     routesToPrerender.splice(i, 1);

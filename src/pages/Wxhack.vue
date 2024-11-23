@@ -18,7 +18,7 @@
     <div
       class="lg:w-4/6 w-full bg-white shadow-md flex flex-col items-center justify-end relative bg-center bg-no-repeat bg-opacity-20 p-4 order-3 lg:order-2">
       <div class="absolute inset-0 flex items-center justify-center -z-10">
-        <img src="../assets/images/posco.png" alt="POSCO" class="opacity-20">
+        <img src="./assets/images/posco.png" alt="POSCO" class="opacity-20">
       </div>
       <!-- 채팅 메시지 영역 -->
       <div ref="chatContainer"
@@ -28,9 +28,8 @@
           :class="{ 'justify-end': msg.isMine, 'justify-start': !msg.isMine }">
           <div :class="{
             'bg-blue-500 text-white': msg.isMine,
-            'bg-gray-200 text-black': !msg.isMine
-          }" class="px-4 py-2 rounded-lg max-w-xs">
-            {{ msg.text }}
+            'text-black': !msg.isMine
+          }" class="px-4 py-2 rounded-lg max-w-3xl text-wrap markdown-body" v-html="msg.text">
           </div>
         </div>
       </div>
@@ -50,51 +49,18 @@
       <div>
         <h2 class="text-lg font-bold mb-4">검색기간 변경</h2>
         <form class="space-y-2">
-          <label class="flex items-center space-x-2">
-            <input type="radio" name="period" value="7" class="text-blue-500">
-            <span>7일</span>
+          <label class="block mb-2">
+            시작 날짜:
+            <input type="date" v-model="startDate" class="border rounded-lg p-2 w-full" />
           </label>
-          <label class="flex items-center space-x-2">
-            <input type="radio" name="period" value="15" class="text-blue-500">
-            <span>15일</span>
+          <label class="block mb-2">
+            종료 날짜:
+            <input type="date" v-model="endDate" class="border rounded-lg p-2 w-full" />
           </label>
-          <label class="flex items-center space-x-2">
-            <input type="radio" name="period" value="30" class="text-blue-500" checked>
-            <span>30일</span>
-          </label>
-          <label class="flex items-center space-x-2">
-            <input type="radio" name="period" value="90" class="text-blue-500">
-            <span>90일</span>
-          </label>
-          <label class="flex items-center space-x-2">
-            <input type="radio" name="period" value="180" class="text-blue-500">
-            <span>180일</span>
-          </label>
-        </form>
-      </div>
-      <div>
-        <h2 class="text-lg font-bold mb-4">검색기간 변경</h2>
-        <form class="space-y-2">
-          <label class="flex items-center space-x-2">
-            <input type="radio" name="period2" value="7" class="text-blue-500">
-            <span>7일</span>
-          </label>
-          <label class="flex items-center space-x-2">
-            <input type="radio" name="period2" value="15" class="text-blue-500">
-            <span>15일</span>
-          </label>
-          <label class="flex items-center space-x-2">
-            <input type="radio" name="period2" value="30" class="text-blue-500" checked>
-            <span>30일</span>
-          </label>
-          <label class="flex items-center space-x-2">
-            <input type="radio" name="period2" value="90" class="text-blue-500">
-            <span>90일</span>
-          </label>
-          <label class="flex items-center space-x-2">
-            <input type="radio" name="period2" value="180" class="text-blue-500">
-            <span>180일</span>
-          </label>
+          <button type="button" @click="applyDateFilter"
+            class="bg-blue-500 text-white font-semibold rounded-lg shadow-md px-4 py-2 w-full hover:bg-blue-600 transition duration-200">
+            적용
+          </button>
         </form>
       </div>
     </div>
@@ -102,39 +68,191 @@
 </template>
 
 <script>
+import { ref, reactive, onMounted, nextTick } from "vue";
+import markdownIt from 'markdown-it';
+import markdownItAnchor from 'markdown-it-anchor';
+import markdownItTocDoneRight from 'markdown-it-toc-done-right';
+import markdownItHighlightJS from 'markdown-it-highlightjs';
+import hljs from "highlight.js";
+import matter from 'gray-matter';
+import uslug from "uslug";
+
 export default {
-  data() {
-    return {
-      message: "",
-      chatMessages: [],
-    };
-  },
-  methods: {
-    handleKeydown(event) {
+  setup() {
+    // 데이터 정의
+    const message = ref("");
+    const chatMessages = reactive([]);
+    const startDate = ref(""); // 시작 날짜
+    const endDate = ref("");   // 종료 날짜
+    const chatContainer = ref(null);
+    const toc = ref("");
+
+    // Markdown 객체 정의
+    const md = markdownIt({
+      html: true,
+    }).use(markdownItAnchor, { slugify: (s) => { return uslug(s) }, })
+      .use(markdownItTocDoneRight, {
+        containerClass: 'toc', // TOC 컨테이너 클래스 설정
+        slugify: (s) => { return uslug(s) },
+        callback: (html, ast) => {
+          toc.value = generateToc(ast);
+          toc.value = `<nav>${toc.value}</nav>`;
+        }
+      }).use(markdownItHighlightJS, {
+        hljs: hljs
+      });
+
+    // 메서드 정의
+    const handleKeydown = (event) => {
       if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
-        this.sendMessage();
+        sendMessage();
       }
-    },
-    sendMessage() {
-      if (this.message.trim() !== "") {
-        this.chatMessages.push({ text: this.message, isMine: true });
-        this.message = "";
-        this.$nextTick(() => {
-          const container = this.$refs.chatContainer;
-          container.scrollTop = container.scrollHeight;
+    };
+
+    const generateToc = (node) => {
+      let html = "";
+      // 현재 노드의 이름이 있는 경우 li 요소로 감싸기
+      if (node.n) {
+        let padding = 'ps-3';
+        if (node.l === 1) {
+          padding = '';
+        }
+        html += `<li class="text-sm text-slate-300 ${padding}"><a href="#${uslug(node.n)}">${node.n}`;
+      }
+
+      // "c" 키가 배열이고, 배열에 요소가 있는 경우 ul로 감싸고 재귀 호출
+      if (Array.isArray(node.c) && node.c.length > 0) {
+        html += "<ul>";
+        node.c.forEach(childNode => {
+          html += generateToc(childNode); // 하위 노드를 재귀적으로 처리
         });
+        html += "</ul>";
+      }
+
+      // 현재 노드가 li로 시작했다면 li를 닫기
+      if (node.n) {
+        html += "</a></li>";
+      }
+
+      return html;
+    }
+
+    const sendMessage = async () => {
+      if (message.value.trim() !== "") {
+        const newMessage = { text: message.value, isMine: true };
+
+        // 로컬에 메시지 추가
+        chatMessages.push(newMessage);
+
+        // 메시지 초기화
+        const messageToSend = message.value;
+        message.value = "";
+
+        // POST 요청으로 메시지 전송
+        try {
+          const response = await fetch("http://127.0.0.1/api/chat/send-message", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json", // 요청 데이터 타입
+            },
+            body: JSON.stringify({
+              message: messageToSend,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("메시지 전송 실패: " + response.statusText);
+          }
+
+          const responseData = await response.json();
+          console.log("서버 응답:", responseData);
+        } catch (error) {
+          console.error("메시지 전송 중 에러 발생:", error);
+        }
+
+        // 스크롤 처리
+        nextTick(() => {
+          if (chatContainer.value) {
+            chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
+          }
+        });
+
         // 상대방 메시지 추가 (예제용)
         setTimeout(() => {
-          this.chatMessages.push({ text: "이 메시지는 상대방의 답장입니다.", isMine: false });
+          let responseMessage = "아래는 요청하신 쿼리문입니다.";
+          responseMessage += `
+\`\`\`sql
+SELECT no, name, room, room_id, heat, no, testcol, opsco, posco
+FROM table_name AS Table
+LEFT JOIN join_table_name AS JOIN_TABLE
+ON TABLE.no = JOIN_TABLE.table_no
+WHERE TABLE.id=1
+\`\`\` `;
+
+          responseMessage += `
+query의 결과는 아래 표와 같습니다.
+
+|no|name|room|room_id|heat|no|testcol|opsco|posco|
+|---|---|---|---|---|---|---|---|---|
+|데이터1|데이터2|데이터3|데이터1|데이터2|데이터3|데이터1|데이터2|데이터3|
+|데이터4|데이터5|데이터6|데이터4|데이터5|데이터6|데이터4|데이터5|데이터6|
+|데이터7|데이터8|데이터9|데이터7|데이터8|데이터9|데이터7|데이터8|데이터9|
+|데이터1|데이터2|데이터3|데이터1|데이터2|데이터3|데이터1|데이터2|데이터3|
+|데이터4|데이터5|데이터6|데이터4|데이터5|데이터6|데이터4|데이터5|데이터6|
+|데이터7|데이터8|데이터9|데이터7|데이터8|데이터9|데이터7|데이터8|데이터9|
+`;
+
+
+          responseMessage = md.render(responseMessage);
+          chatMessages.push({ text: responseMessage, isMine: false });
         }, 1000);
       }
-    },
+    };
+
+
+    const applyDateFilter = () => {
+      if (!startDate.value || !endDate.value) {
+        alert("시작 날짜와 종료 날짜를 모두 선택해주세요!");
+        return;
+      }
+      if (new Date(startDate.value) > new Date(endDate.value)) {
+        alert("시작 날짜는 종료 날짜보다 앞서야 합니다.");
+        return;
+      }
+      alert(`선택된 기간: ${startDate.value} ~ ${endDate.value}`);
+      // 추가적인 필터링 로직 작성
+    };
+
+    // 초기화 및 라이프사이클 훅
+    onMounted(() => {
+      console.log("컴포넌트가 마운트되었습니다.");
+    });
+
+    return {
+      message,
+      chatMessages,
+      startDate,
+      endDate,
+      chatContainer,
+      handleKeydown,
+      sendMessage,
+      applyDateFilter,
+    };
   },
 };
 </script>
 
+
+
 <style>
+@import '/node_modules/github-markdown-css/github-markdown-light.css';
+@import '/node_modules/highlight.js/styles/vs.css';
+
+.markdown-body {
+  min-height: auto !important;
+}
+
 /* 스크롤바 숨기기 */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;

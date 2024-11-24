@@ -22,7 +22,7 @@
     <div
       class="lg:w-4/6 w-full bg-white shadow-md flex flex-col items-center justify-end relative bg-center bg-no-repeat bg-opacity-20 p-4 order-3 lg:order-2">
       <div class="absolute inset-0 flex items-center justify-center -z-10">
-        <img src="./assets/images/posco.png" alt="POSCO" class="opacity-20">
+        <img src="../assets/images/posco.png" alt="POSCO" class="opacity-20">
       </div>
       <!-- 채팅 메시지 영역 -->
       <div ref="chatContainer"

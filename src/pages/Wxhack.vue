@@ -4,13 +4,17 @@
     <div class="lg:w-1/6 w-full bg-white shadow-md p-4 flex flex-col order-1">
       <h2 class="text-lg font-bold mb-4">Channels</h2>
       <ul class="space-y-2 flex-grow">
-        <li class="text-red-500">● STS제강</li>
+        <li v-for="(channel, index) in channels" :key="index" @click="selectChannel(index)"
+          class="cursor-pointer p-2 rounded-lg hover:bg-gray-100" :class="{ 'bg-blue-100': selectedChannel === index }">
+          {{ channel.title }}
+        </li>
+        <!-- <li class="text-red-500">● STS제강</li>
         <li class="text-yellow-500">● STS연주</li>
         <li class="text-green-500">● 제강</li>
         <li class="text-blue-500">● 연주</li>
         <li class="text-purple-500">● 열연</li>
         <li class="text-blue-500">● 냉연</li>
-        <li class="text-blue-500">● STS냉연</li>
+        <li class="text-blue-500">● STS냉연</li> -->
       </ul>
     </div>
 
@@ -18,7 +22,7 @@
     <div
       class="lg:w-4/6 w-full bg-white shadow-md flex flex-col items-center justify-end relative bg-center bg-no-repeat bg-opacity-20 p-4 order-3 lg:order-2">
       <div class="absolute inset-0 flex items-center justify-center -z-10">
-        <img src="./assets/images/posco.png" alt="POSCO" class="opacity-20">
+        <img src="../assets/images/posco.png" alt="POSCO" class="opacity-20">
       </div>
       <!-- 채팅 메시지 영역 -->
       <div ref="chatContainer"
@@ -76,11 +80,14 @@ import markdownItHighlightJS from 'markdown-it-highlightjs';
 import hljs from "highlight.js";
 import matter from 'gray-matter';
 import uslug from "uslug";
+import { useSeoMeta } from '@unhead/vue';
 
 export default {
   setup() {
     // 데이터 정의
     const message = ref("");
+    const channels = reactive([]);
+    const selectedChannel = ref(0); // 현재 선택된 채널
     const chatMessages = reactive([]);
     const startDate = ref(""); // 시작 날짜
     const endDate = ref("");   // 종료 날짜
@@ -108,6 +115,15 @@ export default {
         event.preventDefault();
         sendMessage();
       }
+    };
+
+    const selectChannel = (index) => {
+      selectedChannel.value = index; // 선택된 채널 변경
+    };
+
+    const addNewChannel = (title) => {
+      channels.push({ title, messages: [] });
+      selectedChannel.value = channels.length - 1; // 새로 추가된 채널로 이동
     };
 
     const generateToc = (node) => {
@@ -227,7 +243,21 @@ query의 결과는 아래 표와 같습니다.
     // 초기화 및 라이프사이클 훅
     onMounted(() => {
       console.log("컴포넌트가 마운트되었습니다.");
+      channels.push({ id: 1, title: 'New Channel', message: '' });
+      channels.push({ id: 2, title: 'STS제강', message: '' });
+      channels.push({ id: 3, title: 'STS연주', message: '' });
+      channels.push({ id: 4, title: '도금부', message: '' });
+      channels.push({ id: 5, title: '냉연', message: '' });
     });
+
+    useSeoMeta({
+      title: 'wxhack - prototype',
+      description: 'wxhack - prototype',
+      ogDescription: 'wxhack - prototype',
+      ogTitle: 'wxhack - prototype',
+      // ogImage: 'https://example.com/image.png',
+      // twitterCard: 'summary_large_image',
+    })
 
     return {
       message,
@@ -238,6 +268,10 @@ query의 결과는 아래 표와 같습니다.
       handleKeydown,
       sendMessage,
       applyDateFilter,
+      channels,
+      selectChannel,
+      selectedChannel,
+      addNewChannel,
     };
   },
 };

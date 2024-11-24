@@ -22,7 +22,7 @@
     <div
       class="lg:w-4/6 w-full bg-white shadow-md flex flex-col items-center justify-end relative bg-center bg-no-repeat bg-opacity-20 p-4 order-3 lg:order-2">
       <div class="absolute inset-0 flex items-center justify-center -z-10">
-        <img src="../assets/images/posco.png" alt="POSCO" class="opacity-20">
+        <img src="./assets/images/posco.png" alt="POSCO" class="opacity-20">
       </div>
       <!-- 채팅 메시지 영역 -->
       <div ref="chatContainer"
@@ -80,7 +80,6 @@ import markdownItHighlightJS from 'markdown-it-highlightjs';
 import hljs from "highlight.js";
 import matter from 'gray-matter';
 import uslug from "uslug";
-import { useSeoMeta } from '@unhead/vue';
 
 export default {
   setup() {
@@ -154,6 +153,31 @@ export default {
       return html;
     }
 
+    const getChannels = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1/api/channel/get-channels", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const res = await response.json();
+
+        for (let i = 0; i < res.data.length; ++i) {
+          channels.push(res.data[i]);
+        }
+
+      } catch (error) {
+        console.log("채널 로드 중 에러 발생: " + error.message);
+      }
+    };
+
+
     const sendMessage = async () => {
       if (message.value.trim() !== "") {
         const newMessage = { text: message.value, isMine: true };
@@ -161,13 +185,16 @@ export default {
         // 로컬에 메시지 추가
         chatMessages.push(newMessage);
 
+        // 스크롤 처리
+        scrollToBottom();
+
         // 메시지 초기화
         const messageToSend = message.value;
         message.value = "";
 
         // POST 요청으로 메시지 전송
         try {
-          const response = await fetch("http://127.0.0.1/api/chat/send-message", {
+          const response = await fetch("http://127.0.0.1/api/message/send-message", {
             method: "POST",
             headers: {
               "Content-Type": "application/json", // 요청 데이터 타입
@@ -187,12 +214,7 @@ export default {
           console.error("메시지 전송 중 에러 발생:", error);
         }
 
-        // 스크롤 처리
-        nextTick(() => {
-          if (chatContainer.value) {
-            chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
-          }
-        });
+
 
         // 상대방 메시지 추가 (예제용)
         setTimeout(() => {
@@ -222,10 +244,22 @@ query의 결과는 아래 표와 같습니다.
 
           responseMessage = md.render(responseMessage);
           chatMessages.push({ text: responseMessage, isMine: false });
+
+          // 스크롤 처리
+          scrollToBottom();
+
         }, 1000);
       }
     };
 
+    // 스크롤 아래로
+    const scrollToBottom = () => {
+      nextTick(() => {
+        // if (chatContainer.value) {
+        chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
+        // }
+      });
+    }
 
     const applyDateFilter = () => {
       if (!startDate.value || !endDate.value) {
@@ -242,6 +276,7 @@ query의 결과는 아래 표와 같습니다.
 
     // 초기화 및 라이프사이클 훅
     onMounted(() => {
+      getChannels();
       console.log("컴포넌트가 마운트되었습니다.");
       channels.push({ id: 1, title: 'New Channel', message: '' });
       channels.push({ id: 2, title: 'STS제강', message: '' });
@@ -249,15 +284,6 @@ query의 결과는 아래 표와 같습니다.
       channels.push({ id: 4, title: '도금부', message: '' });
       channels.push({ id: 5, title: '냉연', message: '' });
     });
-
-    useSeoMeta({
-      title: 'wxhack - prototype',
-      description: 'wxhack - prototype',
-      ogDescription: 'wxhack - prototype',
-      ogTitle: 'wxhack - prototype',
-      // ogImage: 'https://example.com/image.png',
-      // twitterCard: 'summary_large_image',
-    })
 
     return {
       message,
